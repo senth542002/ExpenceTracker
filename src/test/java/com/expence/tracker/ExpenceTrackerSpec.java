@@ -91,6 +91,26 @@ public class ExpenceTrackerSpec {
 		assertThat(this.fetchExpeceDetail(expenceSheet, "Varun", "Kumar").getAmount()).isEqualTo(-40.0);
 	}
 	
+	
+	@Test
+	public void trackExpenceBetweenThreePeopleMultipleIrregularDifferentContributers() throws Exception {
+		participants.add(this.createPerson("Varun", false));
+		participants.add(this.createPerson("Kumar", false));
+		expenceTracker.addExpence(new Transaction(this.createPerson("Senthil", true), "Tea", 90.0, participants));
+		participants = new ArrayList<>();
+		participants.add(this.createPerson("Arun", false));
+		participants.add(this.createPerson("Kumar", false));		
+		expenceTracker.addExpence(new Transaction(this.createPerson("Varun", true), "SpecialTea", 120.0, participants));
+		List<ExpenceDetail> expenceSheet = expenceTracker.fetchExpenceSheet();
+		
+		assertThat(expenceSheet).isNotNull();
+		
+		assertThat(this.fetchExpeceDetail(expenceSheet, "Senthil", "Varun").getAmount()).isEqualTo(-30.0);		
+		assertThat(this.fetchExpeceDetail(expenceSheet, "Senthil", "Kumar").getAmount()).isEqualTo(-30.0);
+		assertThat(this.fetchExpeceDetail(expenceSheet, "Varun", "Arun").getAmount()).isEqualTo(-40.0);		
+		assertThat(this.fetchExpeceDetail(expenceSheet, "Varun", "Kumar").getAmount()).isEqualTo(-40.0);
+	}
+	
 	private Person createPerson(String name, Boolean isCreator) {
 		return new Person(name, isCreator);
 	}

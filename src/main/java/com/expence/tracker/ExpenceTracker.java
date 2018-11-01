@@ -9,7 +9,7 @@ import com.expence.tracker.model.Transaction;
 
 public class ExpenceTracker {
 	
-	public static List<ExpenceDetail> expenceDetails = new ArrayList<>();
+	public  List<ExpenceDetail> expenceDetails = new ArrayList<>();
 	
 	public ExpenceTracker() {
 		//this.expenceSheet = new HashMap<>();
@@ -21,8 +21,7 @@ public class ExpenceTracker {
 
 	public void addExpence(Transaction transaction) {
 		if (expenceDetails.contains(transaction.getCreator())){
-			/*expenceDetails.get(expenceDetails.indexOf(transaction.getCreator()))
-				.trackTransaction(transaction, expenceDetails);*/
+
 			expenceDetails.stream().filter(exp -> exp.getCreator().equals(transaction.getCreator()))
 				.forEach(expence -> expence.trackTransaction(transaction, expenceDetails));
 		} else {
